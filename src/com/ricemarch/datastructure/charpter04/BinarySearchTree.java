@@ -62,10 +62,20 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
         return findMax(root).element;
     }
 
+
     public void insert(AnyType x) {
         root = insert(x, root);
     }
 
+    /**
+     * 删除可能是最困难的操作，如果删除的次数不多，通常使用的策略是惰性删除
+     * 删除需要考虑的几种可能性
+     * 1. 如果节点是叶子结点，它可以被立即删除
+     * 2. 如果节点有一个儿子，则该节点可以在其父节点调整自己的链以绕过该节点后被删除
+     * 3. 如果节点有两个儿子，一般的删除策略是用其右子树的最小的数据代替该节点的数据并递归地删除那个节点
+     *
+     * @param x
+     */
     public void remove(AnyType x) {
         root = remove(x, root);
     }
@@ -75,8 +85,33 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
     }
 
 
+    /**
+     * internal method to remove from a subtree
+     *
+     * @param x the item to remove.
+     * @param t the node that roots the subtree
+     * @return the new root of the subtree
+     */
     private BinaryNode<AnyType> remove(AnyType x, BinaryNode<AnyType> t) {
-        return null;
+        if (t == null) {
+            return t; // item not found;do nothing
+        }
+        int compareResult = myCompare(x, t.element);
+        if (compareResult < 0) {
+            t.left = remove(x, t.left);
+        } else if (compareResult > 0) {
+            t.right = remove(x, t.right);
+        } else if (t.left != null && t.right != null) {
+            // two children
+            // 如果节点有两个儿子，一般的删除策略是用其右子树的最小的数据代替该节点的数据并递归地删除那个节点
+            t.element = findMin(t.right).element;
+            t.right = remove(t.element, t.right);
+        } else {
+            // 如果左右儿子都为空 也一样
+            // 如果节点有一个儿子，则该节点可以在其父节点调整自己的链以绕过该节点后被删除
+            t = (t.left != null) ? t.left : t.right;
+        }
+        return t;
     }
 
     /**
