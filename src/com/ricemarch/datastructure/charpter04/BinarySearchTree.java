@@ -1,6 +1,7 @@
 package com.ricemarch.datastructure.charpter04;
 
 import java.util.Comparator;
+import java.util.Map;
 
 public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
 
@@ -78,10 +79,6 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
      */
     public void remove(AnyType x) {
         root = remove(x, root);
-    }
-
-    public void printTree() {
-
     }
 
 
@@ -188,8 +185,46 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
             //match the result
             return true;
         }
+    }
 
 
+    /**
+     * print the tree contents in sorted order.
+     */
+    public void printTree() {
+
+        if (isEmpty()) {
+            System.out.println("Empty Tree");
+        } else {
+            printTree(root);
+        }
+    }
+
+    /**
+     * internal method to print a subtree in sorted order.
+     *
+     * @param t the node that roots the subtree.
+     */
+    private void printTree(BinaryNode<AnyType> t) {
+        if (t != null) {
+            printTree(t.left);
+            System.out.println(t.element);
+            printTree(t.right);
+        }
+    }
+
+
+    /**
+     * internal method to compute height of a subtree
+     *
+     * @param t the node that roots the subtree
+     */
+    private int height(BinaryNode<AnyType> t) {
+        if (t == null) {
+            return -1;
+        } else {
+            return 1 + Math.max(height(t.left), height(t.right));
+        }
     }
 
 }
