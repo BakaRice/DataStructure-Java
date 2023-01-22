@@ -1,7 +1,6 @@
-package com.ricemarch.datastructure.charpter04;
+package com.ricemarch.datastructure.chapter04;
 
 import java.util.Comparator;
-import java.util.Map;
 
 public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
 
